@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    
+		<!-- 是否要显示SQL -->
+		<!-- 关于显示SQL：使用Hibernate操作数据库是由Hibernate向数据库发送SQL语句，指定为true时会在控制台打印发送的SQL语句 -->
+		<property name="show_sql">true</property>
+
+		<!-- 是否要格式化SQL -->
+		<!-- 将控制台打印的SQL语句格式化 -->
+		<property name="format_sql">true</property>
+
+		<!-- 生成数据库表的策略 -->
+		<!-- 使用Hibernate可以根据 hbm文件自动生成数据库表，可以使用这个选项指定生成方式 -->
+		<property name="hbm2ddl.auto">update</property>
+		
+		
+		 <!-- 当前使用的数据库方言 -->
+     	<!-- 数据库方言：对于同样的操作，不同数据库有自己各自不同的实现，表现为不同语法风格的SQL语句 -->
+     	<!-- 指定数据库方言要使用特定的值： hibernate-release-4.2.4.Final\project\etc\hibernate.properties文件中能够找到 -->
+     	<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+
+
+     	<!-- 以路径的形式指定映射文件的位置，不要写成点符号 -->
+     	<mapping resource="com\superz\study\bean\User.hbm.xml"/>
+     	<mapping resource="com\superz\study\pojo\Question.hbm.xml"/>
+     	<mapping resource="com\superz\study\pojo\Answer.hbm.xml"/>
+		<mapping resource="com\superz\forum\pojo\Board.hbm.xml"/>
+     	<mapping resource="com\superz\forum\pojo\Thread.hbm.xml"/>
+     	<mapping resource="com\superz\forum\pojo\Reply.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

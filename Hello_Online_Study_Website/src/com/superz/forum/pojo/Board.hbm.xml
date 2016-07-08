@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-5-25 0:44:04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.superz.forum.pojo.Board" table="BOARD">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="threadCount" type="int">
+            <column name="THREADCOUNT" />
+        </property>
+        <property name="replyCount" type="int">
+            <column name="REPLYCOUNT" />
+        </property>
+        <many-to-one name="lastReply" class="com.superz.forum.pojo.Reply" fetch="join">
+            <column name="LASTREPLY" />
+        </many-to-one>
+        <one-to-one name="lastThread" class="com.superz.forum.pojo.Thread"></one-to-one>
+    </class>
+</hibernate-mapping>

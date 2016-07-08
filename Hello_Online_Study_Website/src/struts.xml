@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="true"></constant>
+
+
+	<package name="study" extends="struts-default" namespace="/">
+
+		<interceptors>
+			<!-- 声明自定义拦截器栈 -->
+			
+			<interceptor name="MyException" class="com.superz.forum.myinterceptor.MyException"></interceptor>
+			
+			<interceptor-stack name="myStack">
+				<!-- 拦截器或拦截器栈引用 -->
+				<interceptor-ref name="paramsPrepareParamsStack">
+					<!-- 修改某一个拦截器的属性值 -->
+					<param name="prepare.alwaysInvokePrepare">false</param>
+				</interceptor-ref>
+
+				<interceptor-ref name="MyException"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack" />
+
+
+		<global-results>
+			<result name="error">pages/error.jsp</result>
+		</global-results>
+		
+		<action name="thread_*Action" class="threadAction"
+			method="{1}">
+			<result name="listThread_success">forum.jsp</result>
+			<result name="toAddThread_error">pages/user/login.jsp</result>
+			<result name="toAddThread_success">add_thread.jsp</result>
+			<result name="listAllThread_success">pages/manager/displayThread.jsp</result>
+			<result name="deleteThread_success" type="redirectAction">thread_listAllThreadAction.action</result>
+			<result name="addThread_success" type="redirectAction">
+				<param name="actionName">thread_listThreadAction.action</param>
+				<param name="pageNo">1</param>
+			</result>
+		</action>
+		
+		<action name="reply_*Action" class="replyAction"
+			method="{1}">
+			<result name="listReply_success">detail.jsp</result>
+			<result name="listReply_not_success">detail_no_reply.jsp</result>
+			<result name="listAllReply_success">pages/manager/displayReply.jsp</result>
+			<result name="deleteReply_success" type="redirectAction">
+				<param name="actionName">reply_listAllReplyAction.action</param>
+				<param name="id">${thread_id}</param>
+			</result>
+			<result name="addReply_success" type="redirectAction">
+				<param name="actionName">reply_listReplyAction.action</param>
+				<param name="pageNo">${lastPageNo}</param>
+				<param name="id">${id}</param>
+			</result>
+		</action>
+
+		<action name="quest_*Action" method="{1}"
+			class="com.superz.study.action.QusetAction">
+			<result name="submit_success" type="redirectAction">user_backAction.action</result>
+			<result name="displayAllQuestion_success">displayquest.jsp</result>
+			<result name="displayAnswer_success">pages/quest/answer.jsp</result>
+			<result name="displayAnswer_error">pages/quest/no_answer.jsp</result>
+			<result name="addAnswer_success"  type="redirectAction">
+				<param name="actionName">quest_displayAnswerAction.action</param>
+				<param name="id">${id}</param>
+			</result>
+		</action>
+
+		<action name="item_*Action" method="{1}"
+			class="com.superz.study.action.ItemAction">
+			<result name="upload_success" type="redirectAction">user_backAction.action</result>
+			<result name="saveItem_success" type="redirectAction">
+				<param name="actionName">item_displayItemAction.action</param>
+				<param name="num">${num}</param>
+			</result>
+			<result name="updateItem_success" type="redirectAction">
+				<param name="actionName">item_displayItemAction.action</param>
+				<param name="num">${num}</param>
+			</result>
+			<result name="deleteItem_success" type="redirectAction">user_backAction.action
+				<param name="actionName">item_displayItemAction.action</param>
+				<param name="num">${num}</param>
+			</result>
+			<result name="error">pages/error.jsp</result>
+			<result name="displayItem_success">pages/manager/displayItem.jsp</result>
+			<result name="toAddItem_success">pages/item/addItem.jsp</result>
+			<result name="editItem_success">pages/item/editItem.jsp</result>
+		</action>
+
+		<action name="exam_*Action" method="{1}"
+			class="com.superz.study.action.ExamAction">
+			<result name="displayAllGrades_success">pages/exam/displayAllGrades.jsp</result>
+			<result name="getTitleBill_success">pages/exam/exam.jsp</result>
+			<result name="getTitleBill_error">pages/exam/exam_error.jsp</result>
+			<result name="error">pages/error.jsp</result>
+			<result name="toAddItem_success">pages/exam/upload.jsp</result>
+			<result name="addSubject_success">pages/exam/upload.jsp</result>
+		</action>
+
+		<action name="user_*Action" method="{1}"
+			class="com.superz.study.action.UserAction">
+			<result name="edit_success">pages/user/update.jsp</result>
+			<result name="update_success" type="redirectAction">user_backAction.action</result>
+			<result name="login_success">pages/user/login_success.jsp</result>
+			<result name="back_success" type="redirectAction">user_loginAction.action</result>
+			<result name="logout_success" type="redirectAction">thread_listThreadAction.action?pageNo=1</result>
+			<result name="error">pages/error.jsp</result>
+			<result name="login_error">pages/user/login.jsp</result>
+		</action>
+
+		<action name="*Action" method="{1}"
+			class="com.superz.study.action.ManagerAction">
+			<result name="Student_success">pages/manager/displayStudent.jsp</result>
+			<result name="delete_Student_success" type="redirectAction">displayStudentAction.action</result>
+			<result name="edit_Student_success">/pages/manager/editStudent.jsp</result>
+			<result name="add_Student_success" type="redirectAction">displayStudentAction.action</result>
+			<result name="update_Student_success" type="redirectAction">displayStudentAction.action</result>
+
+
+			<result name="Teacher_success">pages/manager/displayTeacher.jsp</result>
+			<result name="delete_Teacher_success" type="redirectAction">displayTeacherAction.action</result>
+			<result name="edit_Teacher_success">pages/manager/editTeacher.jsp</result>
+			<result name="add_Teacher_success" type="redirectAction">displayTeacherAction.action</result>
+			<result name="update_Teacher_success" type="redirectAction">displayTeacherAction.action</result>
+
+			<result name="error">pages/error.jsp</result>
+		</action>
+	</package>
+
+
+</struts>
